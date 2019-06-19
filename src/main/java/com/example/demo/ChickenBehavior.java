@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
      * @param needEggCount 期望下蛋数量
      * @return 实际下蛋数量
      */
-    int layEggs(int needEggCount);
+    void layEggs(int needEggCount);
 
     Chicken getChicken();
 }

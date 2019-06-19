@@ -21,6 +21,7 @@ public class Farm {
 
       String locker ="";
 
+
     public Integer getTotalEnergy() {
         synchronized (locker) {
             return totalEnergy;
@@ -114,8 +115,8 @@ public class Farm {
 
     public static void main(String[] args) {
         Farm farm = new Farm();
-        farm.farmStart(200001, 20);
-        //farm.showChickens();
+        farm.farmStart(200001, 5);
+        farm.showChickens();
     }
 }
 

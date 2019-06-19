@@ -22,4 +22,8 @@ import lombok.*;
      * 小鸡拥有的能量
      */
     Integer energy;
+   /**
+    * 小鸡当前已经产生的鸡蛋
+    */
+   Integer eggCount=0;
 }
