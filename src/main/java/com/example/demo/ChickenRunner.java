@@ -35,6 +35,7 @@ class EatThread implements Runnable {
 
     @Override
     public void run() {
+        //chickenBehavior
         while (!stop) {
             try {
                 chickenBehavior.eat(2);

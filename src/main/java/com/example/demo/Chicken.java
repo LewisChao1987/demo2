@@ -26,7 +26,7 @@ import lombok.*;
    /**
     * 小鸡当前拥有的鸡蛋
     */
-    Integer eggNum;
+    Integer eggNum=10;
 
     /**
      * 小鸡健康指数

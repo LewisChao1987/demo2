@@ -19,24 +19,30 @@ public class Farm {
 
     private Integer totalEnergy = 0;
 
-      String locker ="";
+      final Byte feed_locker =Byte.valueOf("0");
 
+final  Byte product_locker =Byte.valueOf("0");
 
     public Integer getTotalEnergy() {
-        synchronized (locker) {
+        synchronized (feed_locker) {
             return totalEnergy;
         }
     }
 
     public void reduceEnergy(int energy) {
-        synchronized (locker) {
+        synchronized (feed_locker) {
             this.totalEnergy -=energy;
         }
     }
 
     public void setTotalEnergy(int totalEnergy) {
-        synchronized (locker) {
+        synchronized (feed_locker) {
             this.totalEnergy = totalEnergy;
+        }
+    }
+    public  void  addEggs(){
+        synchronized (product_locker){
+            this.totalEggs++;
         }
     }
 
@@ -44,7 +50,7 @@ public class Farm {
         this.chickens = new LinkedList<>();
         if (chickenCount <= 0) return;
         for (int i = 0; i < chickenCount; i++) {
-            chickens.add(Chicken.builder().id(i + 1).name("小鸡" + (i + 1)).energy(0).build());
+            chickens.add(Chicken.builder().id(i + 1).name("小鸡" + (i + 1)).energy(0).eggNum(0).healthIndex(100).build());
         }
     }
 
@@ -91,6 +97,7 @@ public class Farm {
         System.out.println(this.getTotalEnergy());
         this.initChickens(chickenCount);
         this.feedChickens();
+        this.produceEggs();
         this.showChickenTotalEnergy();
         System.out.println(this.getTotalEnergy());
         this.showChickens();  /// rtr ytyty  qwqw
@@ -103,19 +110,33 @@ public class Farm {
         for (int i = 0; i < nThreads; i++) {
             executorService.execute(new FeedRunner(new DefaultChickenBehavior(this.chickens.get(i)), this));
         }
-        try {
-            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+//        try {
+//            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+//                executorService.shutdownNow();
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+    }
+    private void produceEggs(){
+        int nThreads = this.chickens.size();
+        ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
+        for (int i = 0; i < nThreads; i++) {
+            executorService.execute(new ProduceRunner(new DefaultChickenBehavior(this.chickens.get(i)), this));
         }
+//        try {
+//            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+//                executorService.shutdownNow();
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
     public static void main(String[] args) {
         Farm farm = new Farm();
-        farm.farmStart(200001, 5);
+        farm.farmStart(200, 20);
         farm.showChickens();
     }
 }

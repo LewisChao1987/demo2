@@ -11,14 +11,14 @@ package com.example.demo;
      *
      * @param energy
      */
-    void eat(int energy);
+    boolean eat(int energy);
 
     /**
      * 下蛋
      *
      * @return 实际下蛋数量
      */
-    void layEggs();
+    boolean layEggs();
 
     Chicken getChicken();
 }
