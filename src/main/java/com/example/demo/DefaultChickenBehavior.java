@@ -54,7 +54,7 @@ public class DefaultChickenBehavior implements ChickenBehavior {
         Assert.notNull(chicken, "小鸡未确定");
         synchronized (this.chicken) {
             //这里保证小鸡产蛋后能量不能小于最小能量
-            if (this.chicken.energy <= (MIN_ENERGY + ENERGY_TO_EGG_THRESHOLD)) {
+            if (this.chicken.energy < (MIN_ENERGY + ENERGY_TO_EGG_THRESHOLD)) {
                 try {
                     this.chicken.wait();
                     System.out.println("continue laying");

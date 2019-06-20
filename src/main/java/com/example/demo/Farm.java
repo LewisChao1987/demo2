@@ -136,7 +136,7 @@ final  Byte product_locker =Byte.valueOf("0");
 
     public static void main(String[] args) {
         Farm farm = new Farm();
-        farm.farmStart(200, 20);
+        farm.farmStart(2001, 200);
         farm.showChickens();
     }
 }

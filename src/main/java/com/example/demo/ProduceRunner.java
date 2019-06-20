@@ -21,10 +21,11 @@ public class ProduceRunner implements Runnable {
            boolean b = this.behavior.layEggs();
            if (b){
                System.out.println("will stop"+this.chicken);
+               System.out.println(farm.chickens.stream().mapToInt(a->a.eggNum).sum());
                b=true;
            }
             try {
-                TimeUnit.MILLISECONDS.sleep(1000);
+                TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
