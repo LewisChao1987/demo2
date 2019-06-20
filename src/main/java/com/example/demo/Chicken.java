@@ -22,8 +22,14 @@ import lombok.*;
      * 小鸡拥有的能量
      */
     Integer energy;
+
    /**
-    * 小鸡当前已经产生的鸡蛋
+    * 小鸡当前拥有的鸡蛋
     */
-   Integer eggCount=0;
+    Integer eggNum;
+
+    /**
+     * 小鸡健康指数
+     */
+    Integer healthIndex=100;
 }

@@ -1,9 +1,5 @@
 package com.example.demo;
 
-import org.springframework.util.Assert;
-
-import java.util.concurrent.TimeUnit;
-
 /**
  * 鸡行为定义
  */
@@ -20,10 +16,9 @@ import java.util.concurrent.TimeUnit;
     /**
      * 下蛋
      *
-     * @param needEggCount 期望下蛋数量
      * @return 实际下蛋数量
      */
-    void layEggs(int needEggCount);
+    void layEggs();
 
     Chicken getChicken();
 }
