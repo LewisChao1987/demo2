@@ -92,7 +92,7 @@ public class Farm {
         this.feedChickens();
         this.showChickenTotalEnergy();
         System.out.println(this.getTotalEnergy());
-        this.showChickens();  /// rtr
+        this.showChickens();  /// rtr ytyty
 
     }
 
