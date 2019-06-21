@@ -2,15 +2,16 @@ package com.example.demo;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 小鸡产蛋类
+ */
 public class ProduceRunner implements Runnable {
 
-    Farm farm;
     ChickenBehavior behavior;
     Chicken chicken;
     boolean stop =false;
 
-    public ProduceRunner(ChickenBehavior behavior, Farm farm) {
-        this.farm = farm;
+    public ProduceRunner(ChickenBehavior behavior) {
         this.behavior = behavior;
         this.chicken = this.behavior.getChicken();
     }
@@ -20,12 +21,11 @@ public class ProduceRunner implements Runnable {
         while (!stop) {
            boolean b = this.behavior.layEggs();
            if (b){
-               System.out.println("will stop"+this.chicken);
-               System.out.println(farm.chickens.stream().mapToInt(a->a.eggNum).sum());
+              // System.out.println("will stop"+this.chicken);
                b=true;
            }
             try {
-                TimeUnit.MILLISECONDS.sleep(100);
+                TimeUnit.MILLISECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

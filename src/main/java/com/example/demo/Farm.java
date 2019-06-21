@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@Data
+
 @NoArgsConstructor
 public class Farm {
     List<Chicken> chickens;
@@ -19,9 +19,15 @@ public class Farm {
 
     private Integer totalEnergy = 0;
 
-      final Byte feed_locker =Byte.valueOf("0");
+    /**
+     * 喂鸡锁
+     */
+    final Byte feed_locker = Byte.valueOf("0");
 
-final  Byte product_locker =Byte.valueOf("0");
+    /**
+     * 收蛋锁
+     */
+    final Byte collect_locker = Byte.valueOf("0");
 
     public Integer getTotalEnergy() {
         synchronized (feed_locker) {
@@ -29,9 +35,20 @@ final  Byte product_locker =Byte.valueOf("0");
         }
     }
 
+    public void setTotalEggs(Integer totalEggs) {
+        synchronized (totalEggs){
+            this.totalEggs = totalEggs;
+        }
+    }
+    public  Integer getTotalEggs(){
+        synchronized (totalEggs){
+            return  this.totalEggs;
+        }
+    }
+
     public void reduceEnergy(int energy) {
         synchronized (feed_locker) {
-            this.totalEnergy -=energy;
+            this.totalEnergy -= energy;
         }
     }
 
@@ -40,8 +57,9 @@ final  Byte product_locker =Byte.valueOf("0");
             this.totalEnergy = totalEnergy;
         }
     }
-    public  void  addEggs(){
-        synchronized (product_locker){
+
+    public void addEggs() {
+        synchronized (collect_locker) {
             this.totalEggs++;
         }
     }
@@ -99,6 +117,7 @@ final  Byte product_locker =Byte.valueOf("0");
         this.feedChickens();
         this.produceEggs();
         this.showChickenTotalEnergy();
+        this.collectEggs();
         System.out.println(this.getTotalEnergy());
         this.showChickens();  /// rtr ytyty  qwqw
 
@@ -118,11 +137,12 @@ final  Byte product_locker =Byte.valueOf("0");
 //            e.printStackTrace();
 //        }
     }
-    private void produceEggs(){
+
+    private void produceEggs() {
         int nThreads = this.chickens.size();
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
         for (int i = 0; i < nThreads; i++) {
-            executorService.execute(new ProduceRunner(new DefaultChickenBehavior(this.chickens.get(i)), this));
+            executorService.execute(new ProduceRunner(new DefaultChickenBehavior(this.chickens.get(i))));
         }
 //        try {
 //            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
@@ -133,10 +153,26 @@ final  Byte product_locker =Byte.valueOf("0");
 //        }
     }
 
+    private void  collectEggs(){
+        int nThreads = this.chickens.size();
+        ExecutorService executorService = Executors.newFixedThreadPool(nThreads); //自然线程安全类  任务逐个执行
+        for (int i = 0; i <nThreads ; i++) {
+            executorService.execute(new CollectRunner(new DefaultChickenBehavior(this.chickens.get(i)),this));
+        }
+        while (true){
+            System.out.println("farm has eggs:"+this.getTotalEggs());
+            try {
+                TimeUnit.MILLISECONDS.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public static void main(String[] args) {
         Farm farm = new Farm();
-        farm.farmStart(2001, 200);
+        farm.farmStart(3000, 200);
         farm.showChickens();
     }
 }

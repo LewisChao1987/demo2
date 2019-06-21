@@ -2,8 +2,13 @@ package com.example.demo;
 
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 喂鸡线程
+ */
 public class FeedRunner implements Runnable {
 
     Farm farm;
