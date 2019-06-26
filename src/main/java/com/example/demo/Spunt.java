@@ -3,11 +3,14 @@ package com.example.demo;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Spunt {
     private Integer count = 0;
 
-    private final String locker = "";
+    public final String locker = "";
 
 
     public Integer getCount() {
@@ -27,30 +30,40 @@ public class Spunt {
     public synchronized void countReduce(Integer count) {
         synchronized (locker) {
             this.count -= count;
-            System.out.println(this.count);
+            //System.out.println(this.count);
         }
     }
 }
 
-class  Test{
+class Test {
     public static void main(String[] args) {
+        final String sx;
         Spunt spunt = new Spunt();
-        spunt.setCount(10000000);
-        ExecutorService executorService = Executors.newFixedThreadPool(999);
-        for (int i = 0; i <999; i++) {
+        String lock2 = spunt.locker;
+        Thread.interrupted();
+//        spunt.setCount(100);
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        for (int i = 0; i < 1; i++) {
             executorService.execute(new Consumer(spunt));
         }
         try {
-            if (!executorService.awaitTermination(3, TimeUnit.SECONDS));
+            TimeUnit.MILLISECONDS.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //executorService.shutdownNow();
-        System.out.println(spunt.getCount()+"_______________");
+
+        System.out.println("ttt");
+        try {
+            if (!executorService.awaitTermination(3, TimeUnit.SECONDS)) ;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        executorService.shutdownNow();
+        System.out.println(spunt.getCount() + "_______________");
     }
 }
 
-class  Consumer  implements Runnable {
+class Consumer implements Runnable {
     Spunt spunt;
 
     public Consumer(Spunt spunt) {
@@ -59,10 +72,14 @@ class  Consumer  implements Runnable {
 
     @Override
     public void run() {
-        int i = 10000;
+        int i = 800;
         while (i > 0) {
             spunt.countReduce(1);
             i--;
+            if (i <= 50) {
+//                break;
+                Thread.interrupted();
+            }
         }
     }
 }

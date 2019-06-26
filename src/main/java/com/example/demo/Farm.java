@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-
+@Data
 @NoArgsConstructor
 public class Farm {
     List<Chicken> chickens;
