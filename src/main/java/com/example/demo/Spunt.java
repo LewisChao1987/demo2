@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.springframework.context.event.ContextStartedEvent;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -37,6 +39,7 @@ public class Spunt {
 
 class Test {
     public static void main(String[] args) {
+
         final String sx;
         Spunt spunt = new Spunt();
         String lock2 = spunt.locker;

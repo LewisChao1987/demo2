@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.config.SpringApplicationRegister;
+import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,15 @@ public class TestController {
             Runtime rt = Runtime.getRuntime();
             System.out.println("free memory: " + rt.freeMemory());
         }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "bean")
+    public Boolean testBean() {
+      Object object =  SpringApplicationRegister.getBean("applicationEventMulticaster");
+      if (object instanceof SimpleApplicationEventMulticaster){
+          return  true;
+      }else
+      {return  false;}
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "")
